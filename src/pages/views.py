@@ -122,14 +122,15 @@ def AttendanceView(request):
         code=item.course_id #dc101
         name=item.name #data communication
         target=AttendanceDetail.objects.filter(student_id=request.user.id).filter(attendance__course_id=code) 
-        total=target.count()
+        total = 0
         present=0
         absent=0
         for itr in target:
+            total+=1
             if itr.status==True:
                 present+=1
         absent=total-present
-        percent=(present/total)*100
+        percent=(present/max(1,total))*100
         CourseList.append([code,name,present,absent,percent])
 
     context={
